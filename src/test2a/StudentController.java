@@ -2,6 +2,9 @@ package test2a;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
 /**
  * @author Administrator
  *StudentController 
@@ -9,7 +12,9 @@ import java.util.List;
     调用 StudentService.findAll()
     使用循环打印“学号 姓名 性别 年龄 专业”
  */
+@Controller
 public class StudentController {
+	@Autowired
 	private StudentService studentService;
 	
 	public StudentController(StudentService studentService) {

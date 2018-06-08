@@ -5,15 +5,18 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	
-	
-	<bean id="studentController" class="test2a.StudentController">
-		<constructor-arg ref="studentService"></constructor-arg>
+	<context:component-scan base-package="test2a"></context:component-scan>
+								
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<constructor-arg value="jdbc:oracle:thin:@localhost:1521:orcl"></constructor-arg>
+		<constructor-arg value="scott"></constructor-arg>
+		<constructor-arg value="123456"></constructor-arg>
+		                                          
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
 	</bean>
 	
-	<bean id="studentService" class="test2a.StudentServiceImpl">
-		<constructor-arg ref="studentDao"></constructor-arg>	
-	</bean>
 	
-	<bean id="studentDao" class="test2a.StudentDaoImpl">
-	</bean>
+	
+	
+	
 </beans>

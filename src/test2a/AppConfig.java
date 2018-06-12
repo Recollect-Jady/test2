@@ -7,11 +7,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
 @ComponentScan(basePackages = "test2a")
-@PropertySource({"classpath:jdbc.properties","classpath:test2a/App.properties"})
+@PropertySource({ "classpath:jdbc.properties", "classpath:test2a/App.properties" })
 public class AppConfig {
 	@Bean
 	public DataSource dataSource(Environment env) {
@@ -22,6 +23,12 @@ public class AppConfig {
 		dd.setDriverClassName(env.getProperty("jdbc.driverClassName")// "oracle.jdbc.driver.OracleDriver"
 		);
 		return dd;
+	}
+
+	@Bean
+	public JdbcTemplate jdbcTemplate(DataSource ds) {
+		return new JdbcTemplate(ds);
+
 	}
 
 }

@@ -1,57 +1,50 @@
 package test2a;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
 @Repository
 public class StudentDaoImpl implements StudentDao {
 	@Autowired
-	private DataSource dataSource;
-	
-	public StudentDaoImpl(DataSource dataSource) {
-		this.dataSource = dataSource;
+	private JdbcTemplate jdbcTemplate;
+
+	public StudentDaoImpl(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	@Override
 	public List<Student> queryAll() {
-		List<Student> result =new ArrayList<>();
-		Connection cnt = null;
-		try {
-			cnt = dataSource.getConnection();
-			PreparedStatement ps = cnt.prepareStatement
-					("select S_NUMBER, S_NAME, S_GENDER, S_AGE, S_MAJOR from STU");
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				int number = rs.getInt(1);
-				String name = rs.getString(2);
-				Gender gender = Gender.valueOf(rs.getString(3));
-				int age = rs.getInt(4);
-				String major = rs.getString(5);
-				Student s = new Student(number, name, gender, age, major);
-				result.add(s);
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			if (cnt!=null) {
-				try {
-					cnt.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		return result;
-	}
+		String sql = "select S_NUMBER, S_NAME, S_GENDER, S_AGE, S_MAJOR,S_ID from STU";
 
+		return jdbcTemplate.query(sql, new StudentRowMapper());
+	}
+	//根据id查
+	public Student findOne(int id) {
+		String sql = "select * from STU where S_ID="+id;
+		
+		return jdbcTemplate.queryForObject(sql, new StudentRowMapper());
+		
+	}
+	
+	//添加
+	public void add(Student student) {
+		String sql = "insert into STU values(?,?,?,?,?,?)";
+		jdbcTemplate.update(sql,student.getNumber(),student.getName(),student.getGender(),student.getAge(),
+				student.getMajor(),student.getId());
+	}
+	
+	//删除
+	public void delete(Integer id) {
+		String sql ="delete STU where where S_ID="+id;
+		jdbcTemplate.update(sql);
+	}
+	
+	//修改
+	public void update(Student student) {
+		String sql ="updata STU set S_NUMBER=?,S_NAME=?,S_GENDER=?,S_AGE=?,S_MAJOR=?,S_ID=?";
+		jdbcTemplate.update(sql);
+	}
 }

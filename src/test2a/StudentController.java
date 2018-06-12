@@ -24,10 +24,10 @@ public class StudentController {
 	public void list() {
 		List<Student> list= studentService.findAll();
 		for (Student student : list) {
-			System.out.println(String.format("学号:%s 姓名:%s 性别:%s 年龄:%s 专业:%s",
+			System.out.println(String.format("学号:%s 姓名:%s 性别:%s 年龄:%s 专业:%s ID:%s",
 					student.getNumber(),student.getName(),
 					student.getGender(),student.getAge(),
-					student.getMajor()));
+					student.getMajor(),student.getId()));
 		}
 	}
 

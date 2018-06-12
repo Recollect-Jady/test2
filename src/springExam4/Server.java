@@ -9,8 +9,8 @@ public class Server {
 	private Integer port;
 	@Autowired
 	public Server(Environment env) {
-		this.host = env.getProperty("server.host");
-		this.port = Integer.valueOf(env.getProperty("server.port"));
+		host = env.getProperty("server.host");
+		port = Integer.valueOf(env.getProperty("server.port"));
 	}
 	
 		

@@ -5,6 +5,12 @@ package test2a;
  *         -age: Int -major: String +getters +构造器（初始化所有字段）
  */
 public class Student {
+	@Override
+	public String toString() {
+		return "Student [number=" + number + ", name=" + name + ", gender=" + gender + ", age=" + age + ", major="
+				+ major + ", id=" + id + "]";
+	}
+
 	private int number;
 	private String name;
 	private Gender gender;
